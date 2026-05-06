@@ -68,3 +68,9 @@ Returns either the real Anthropic Claude model or a mock fallback based on wheth
 ### Path alias
 
 `@/*` resolves to `src/*` throughout the project.
+
+## About this file
+
+`CLAUDE.md` was originally listed in `.gitignore`. That is the default behavior of Claude Code: it adds `CLAUDE.md` to `.gitignore` so that project-specific AI guidance stays local and is not accidentally committed to shared repositories (since it may contain internal context, conventions, or instructions teams prefer to keep out of version control).
+
+In this repository it was explicitly removed from `.gitignore` and committed as part of a Claude Code learning exercise, so the file and its purpose can be explored and version-controlled alongside the rest of the project.
