@@ -113,3 +113,28 @@ Open the .claude/settings.local.json file and add the server to the allow array:
 ```
 
 > Note the double underscores in **_mcp\_\_playwright_**. This allows Claude to use the Playwright tools without asking for permission every time.
+
+### GitHub App integration (`/install-github-app`)
+
+Claude Code ships with a built-in `/install-github-app` slash command that wires up the [Claude Code GitHub Action](https://github.com/anthropics/claude-code-action) so Claude can respond to issues and review pull requests directly on GitHub.
+
+**What was set up**
+
+Running `/install-github-app` performed the following:
+
+1. Installed the **Claude GitHub App** on this repository, granting it the permissions it needs to read issues/PRs and post comments.
+2. Added `ANTHROPIC_API_KEY` as a repository secret so the workflows can authenticate with the Anthropic API.
+3. Created two workflow files under `.github/workflows/`:
+   - **`claude.yml`** — Triggers on issue comments, PR review comments, PR reviews, and new/assigned issues. The job only runs when the body or title contains `@claude`, at which point Claude reads the context and follows the instructions in the comment.
+   - **`claude-code-review.yml`** — Runs automatically on every pull request (`opened`, `synchronize`, `ready_for_review`, `reopened`) and invokes the `code-review` plugin from the official Claude Code plugin marketplace to leave an automated review.
+
+**Purpose**
+
+- **`claude.yml`** turns `@claude` into an on-demand assistant inside GitHub: tag it in an issue to draft an implementation, or in a PR comment to ask for changes. It uses the same toolset as local Claude Code, just executed in a GitHub Actions runner.
+- **`claude-code-review.yml`** provides a "second pair of eyes" on every PR without anyone having to ask — useful for catching issues early in a learning project where there isn't always a human reviewer available.
+
+**Notes**
+
+- Both workflows request the minimum permissions needed (`contents: read`, `pull-requests: read`, `issues: read`, `id-token: write`). `claude.yml` additionally requests `actions: read` so Claude can inspect CI results when asked about a failing build.
+- The workflow files include commented-out examples showing how to scope reviews to specific paths, filter by PR author, or pass extra `claude_args` (e.g. restricting tool access). They are kept as-is here for learning visibility.
+- The API key lives in repo secrets — it is never echoed into logs, and the workflows reference it via `${{ secrets.ANTHROPIC_API_KEY }}`.
