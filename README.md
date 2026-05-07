@@ -67,3 +67,28 @@ Open [http://localhost:3000](http://localhost:3000)
 - Prisma with SQLite
 - Anthropic Claude AI
 - Vercel AI SDK
+
+## Learning session: custom Claude Code slash commands
+
+This repo also serves as a sandbox for learning [Claude Code](https://claude.com/claude-code) features. The `.claude/commands/` directory contains two project-scoped slash commands created purely as learning exercises — not as recommended workflows for this project.
+
+### `/audit`
+
+File: `.claude/commands/audit.md`
+
+A no-argument command that walks Claude through three steps: `npm audit`, `npm audit fix`, and `npm test`. Created to explore how project-scoped commands are defined and discovered.
+
+> **Do not actually run this.** As noted in the Setup section, `npm audit fix` will break dependency compatibility in this repo. The command exists only to demonstrate the slash-command file format.
+
+### `/write_tests <target>`
+
+File: `.claude/commands/write_tests.md`
+
+An argument-accepting command demonstrating Claude Code's `$ARGUMENTS` placeholder. Invoke it like `/write_tests src/lib/file-system.ts` and Claude will write Vitest + React Testing Library tests for that target, following the repo's conventions (`__tests__/` directories, `@/` import alias, happy paths + edge cases + error states).
+
+This one is safe to run and reflects the actual testing conventions used in the codebase.
+
+### Notes on the `.claude/` directory
+
+- `.claude/commands/*.md` is committed so commands are shared with anyone who clones the repo.
+- `.claude/settings.local.json` is gitignored — it holds machine-local Claude Code settings (e.g., approved permissions) that shouldn't be shared.
