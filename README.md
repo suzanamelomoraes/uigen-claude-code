@@ -68,7 +68,11 @@ Open [http://localhost:3000](http://localhost:3000)
 - Anthropic Claude AI
 - Vercel AI SDK
 
-## Learning session: custom Claude Code slash commands
+---
+
+# Learning session:
+
+## custom Claude Code slash commands
 
 This repo also serves as a sandbox for learning [Claude Code](https://claude.com/claude-code) features. The `.claude/commands/` directory contains two project-scoped slash commands created purely as learning exercises — not as recommended workflows for this project.
 
@@ -92,3 +96,20 @@ This one is safe to run and reflects the actual testing conventions used in the 
 
 - `.claude/commands/*.md` is committed so commands are shared with anyone who clones the repo.
 - `.claude/settings.local.json` is gitignored — it holds machine-local Claude Code settings (e.g., approved permissions) that shouldn't be shared.
+
+## Managing MCP Permissions
+
+When you first use MCP server tools, Claude will ask for permission each time. You can pre-approve the server by editing your settings.
+
+Open the .claude/settings.local.json file and add the server to the allow array:
+
+```
+{
+  "permissions": {
+    "allow": ["mcp__playwright"],
+    "deny": []
+  }
+}
+```
+
+> Note the double underscores in **_mcp\_\_playwright_**. This allows Claude to use the Playwright tools without asking for permission every time.
